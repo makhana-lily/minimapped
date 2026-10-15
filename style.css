@@ -42,7 +42,7 @@ body::before {
 
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Ranade", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   display: flex; flex-direction: column; min-height: 100vh;
 }
 button { font: inherit; color: inherit; cursor: pointer; }
@@ -282,6 +282,9 @@ dialog h2 { margin-top: 0; }
   text-decoration: underline dotted; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
   text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: help;
 }
+
+@font-face { font-family: "Ranade"; src: url("fonts/Ranade-Variable.woff2") format("woff2"); font-weight: 100 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Ranade"; src: url("fonts/Ranade-VariableItalic.woff2") format("woff2"); font-weight: 100 700; font-style: italic; font-display: swap; }
 
 @font-face {
   font-family: "Orbitron"; src: url("fonts/Orbitron.ttf") format("truetype");
@@ -820,7 +823,7 @@ a.tab { text-decoration: none; display: inline-block; }
 
 .item-box::after {
   content: attr(data-tip); position: absolute; left: 50%; top: calc(100% + 6px); transform: translate(-50%, -4px);
-  white-space: nowrap; padding: 5px 9px; border-radius: 8px; font: 700 .75rem/1 system-ui, sans-serif;
+  white-space: nowrap; padding: 5px 9px; border-radius: 8px; font: 700 .75rem/1 "Ranade", system-ui, sans-serif;
   background: #1b1a17; color: #f2eee4; border: 1px solid #ffd400; opacity: 0; pointer-events: none;
   transition: opacity .15s ease, transform .15s ease; z-index: 5;
 }
@@ -920,7 +923,7 @@ a.pr-seq-btn:hover, a.pr-seq-btn:focus-visible { background: color-mix(in srgb, 
 .pr-gamearrow {
   position: fixed; top: 50%; z-index: 5; transform: translateY(-50%);
   width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
-  font: 400 2.6rem/1 system-ui, sans-serif; padding-bottom: 6px; box-sizing: border-box; text-decoration: none;
+  font: 400 2.6rem/1 "Ranade", system-ui, sans-serif; padding-bottom: 6px; box-sizing: border-box; text-decoration: none;
   color: #f2eee4; background: rgba(20,19,17,.85); border: 2px solid var(--game, var(--line));
   transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
 }
@@ -1018,7 +1021,7 @@ body { overflow-x: clip; }
   box-shadow: 0 20px 60px rgba(0,0,0,.5); transform: translateY(10px) scale(.98); transition: transform .2s ease; }
 .pr-modal.in .pr-modal-card { transform: none; }
 .pr-modal-card .pr-favs-title { padding-right: 34px; }
-.pr-modal-card .pr-favs-title small { margin-left: auto; font-family: system-ui, sans-serif; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.pr-modal-card .pr-favs-title small { margin-left: auto; font-family: "Ranade", system-ui, sans-serif; font-size: .9rem; color: var(--muted); font-weight: 700; }
 .pr-modal-x { top: 14px; right: 14px; z-index: 2; }
 .pr-modal-card.closing .pr-modal-x { opacity: 1; }
 .pr-modal-card.closing .pr-modal-x i:first-child { transform: rotate(45deg) scaleX(0); }
@@ -1076,7 +1079,7 @@ body.pr-modal-open { overflow: hidden; }
 .guesses li.right { box-shadow: inset 6px 0 0 var(--good); background: linear-gradient(90deg, rgba(20,60,34,.95), rgba(20,60,34,.85) 70%, rgba(20,60,34,.45)); }
 .guesses li.right .mark { color: #5fd47f; }
 .guesses li.skipped { color: #cfcac0; box-shadow: inset 6px 0 0 #8a8478; }
-.guesses li small { color: #a8a39a; font-family: system-ui; font-weight: 800; text-shadow: none; }
+.guesses li small { color: #a8a39a; font-family: "Ranade", system-ui; font-weight: 800; text-shadow: none; }
 .guesses li.empty { background: color-mix(in srgb, var(--bg) 70%, transparent); border: 2px dashed color-mix(in srgb, var(--ink) 45%, transparent);
   color: var(--muted); text-shadow: none; box-shadow: none; }
 .guesses li.empty small { color: var(--muted); }
@@ -1177,7 +1180,7 @@ html { scroll-padding-top: 72px; }
 /* fav switchers */
 .pr-favflips { margin-left: auto; display: flex; gap: 8px; }
 .pr-favflip { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 7px; border-radius: 999px; cursor: pointer;
-  border: 2px solid var(--game); background: #1b1a17; color: #f2eee4; font: 800 .8rem system-ui, sans-serif; transition: background .2s ease, transform .15s ease; }
+  border: 2px solid var(--game); background: #1b1a17; color: #f2eee4; font: 800 .8rem "Ranade", system-ui, sans-serif; transition: background .2s ease, transform .15s ease; }
 .pr-favflip svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .pr-favflip .pr-flip-a { fill: #f2eee4; }
 .pr-favflip[aria-pressed="true"] { background: var(--game); color: #1b1a17; }
