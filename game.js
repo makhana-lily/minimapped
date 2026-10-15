@@ -220,7 +220,7 @@
       const btn = $("hint-" + which), shown = state.hints[which] || state.done;
       btn.disabled = !unlocked || shown;
       btn.classList.toggle("shown", shown);
-      $(`hint-${which}-value`).innerHTML = shown ? (which === "cup" ? C.cupIcon(value) : "") + escapeHtml(value) : unlocked ? "Tap to reveal" : "🔒";
+      $(`hint-${which}-value`).innerHTML = shown ? (which === "cup" ? C.cupIcon(value) : "") + escapeHtml(value) : unlocked ? "Click to reveal" : "🔒";
     }
     const left = HINTS_AFTER - wrongCount();
     $("hint-note").textContent = state.done ? "" :
