@@ -457,7 +457,7 @@
     if (UNLIMITED && C_) C_.showNext("draw-bonus-slot", "Lets-a go!", () => nextTrack());
     else countdown();
     lastShare = C_.shareHead("Draw", PUZZLE, UNLIMITED) + `\n${courseName(current)} (${current.game}): ${pct}% accurate!` +
-                `\n${peeksUsed ? `👀 ${peeksUsed} peek${peeksUsed === 1 ? "" : "s"} used.` : "🙈 no peeks used."}`;
+                `\n${peeksUsed ? `👀 ${peeksUsed} peek${peeksUsed === 1 ? "" : "s"} used.` : "🙈 no peeks used."}` + C_.SHARE_LINK;
 
     const img = new Image(), forId = current.map_id;
     img.onload = () => {

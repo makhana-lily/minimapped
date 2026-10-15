@@ -268,13 +268,14 @@
 
   //copy paste results (discord style)
   function shareHead(mode, puzzle, free) {
-    if (free) return `__**Minimapped**__: ${mode} (Freeplay)`;
+    if (free) return `MINIMAPPED: ${mode} (Freeplay)`;
     const [y, m, d] = (window.MINIMAPPED || {}).launch.split("-").map(Number);
     const day = new Date(y, m - 1, d + puzzle - 1).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    return `__**Minimapped**__: Daily ${mode} #${puzzle} (${day})`;
+    return `MINIMAPPED: Daily ${mode} #${puzzle} (${day})`;
   }
   const shareBoxes = (marks, max) => marks.join("") + "⬛".repeat(Math.max(0, max - marks.length));
+  const SHARE_LINK = "\nhttps://makhana-lily.github.io/minimapped/";
   const shareBonus = b => b ? `\nBonus? ${b.right ? "YES! ⭐" : "NO! ❌"}` : "";
 
-  window.MinimappedCourses = { shareHead, shareBoxes, shareBonus, consoleOf, baseName, keyOf, buildOptions, askBonus, setHud, showNext, itemBox, seen, markSeen, clearSlot, FREE, PRACTICE, addFree, LOGOS, logoEl, searchOptions, suggestionHTML, short: g => SHORT[g] || g, norm, ORDER, cupIcon };
+  window.MinimappedCourses = { SHARE_LINK, shareHead, shareBoxes, shareBonus, consoleOf, baseName, keyOf, buildOptions, askBonus, setHud, showNext, itemBox, seen, markSeen, clearSlot, FREE, PRACTICE, addFree, LOGOS, logoEl, searchOptions, suggestionHTML, short: g => SHORT[g] || g, norm, ORDER, cupIcon };
 })();

@@ -385,7 +385,7 @@
     const boxes = C.shareBoxes(state.guesses.map(g => g === "skip" ? "⬜" : isRight(g) ? "🟩" : "🟥"), MAX);
     const text = C.shareHead("Music", PUZZLE, UNLIMITED) + "\n" +
       (state.won ? `Guessed it in: ${state.guesses.length}/${MAX}! (${STEPS[state.guesses.length - 1]} sec)` : `Didn't get it! X/${MAX}`) +
-      `\n${boxes}` + C.shareBonus(state.bonus);
+      `\n${boxes}` + C.shareBonus(state.bonus) + C.SHARE_LINK;
     try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); }
     catch { prompt("Copy your result:", text); }
   });
