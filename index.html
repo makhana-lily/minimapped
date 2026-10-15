@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minimapped</title>
+  <meta name="description" content="A daily guessing game: name the Mario Kart track from its minimap.">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Minimapped">
+  <meta property="og:description" content="Name the Mario Kart track from its minimap. A new puzzle every day, plus Draw and Music modes.">
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Minimapped: SNES Mario Circuit 1's minimap next to the MINIMAPPED logo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#15140f">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- top bar -->
+  <header class="topbar">
+    <span class="topbar-spacer" aria-hidden="true"></span>
+    <div class="topbar-center">
+      <a class="nav-circle" id="home-btn" href="#" title="Home" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 4.2 3.6 11.3h2.6V19h11.6v-7.7h2.6zM10.3 12.6h3.4v3.4h-3.4z"/></svg>
+      </a>
+      <span class="logo" id="top-logo">MINI<span>MAPPED</span></span>
+      <a class="nav-circle" id="back-btn" href="#" title="Back" aria-label="Back">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.6 6.2 4.4 11l5.2 4.8v-3.3h4.6a3.3 3.3 0 0 1 0 6.6h-2.5V21h2.5a5.2 5.2 0 0 0 0-10.4H9.6z" transform="translate(0 -1.6)"/></svg>
+      </a>
+    </div>
+    <button class="icon-btn stats-icon" id="stats-btn" aria-label="Statistics" title="Statistics">
+      <svg viewBox="0 0 30 12" aria-hidden="true"><path d="M3 1h8l-2 10H1z" fill="#ffd400"/><path d="M12.5 1h8l-2 10h-8z" fill="#6b675e"/><path d="M22 1h8l-2 10h-8z" fill="#6b675e"/></svg>
+    </button>
+  </header>
+  <script>
+    if (!/^#(guess|draw|music|free|kartography|pr-)/.test(location.hash)) {
+      document.getElementById("top-logo").classList.add("on-home");
+      document.querySelector(".topbar-center").classList.add("on-home");
+    }
+  </script>
+
+  <!-- home -->
+  <main class="home" id="home" hidden>
+    <div class="home-left">
+      <p class="home-welcome">Welcome to</p>
+      <h1 class="home-title">MINI<span>MAPPED</span><small class="home-version" aria-label="version 1.0">v1.0</small></h1>
+
+      <!-- menu -->
+      <nav class="home-menu" aria-label="Game modes">
+        <p class="menu-section">Game modes</p>
+        <a class="menu-item" href="#guess" data-preview="guess">
+          <img class="menu-ico" src="menu/mode-guess.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Daily Guess</span><span class="menu-desc">Guess the minimap!</span></span>
+        </a>
+        <a class="menu-item" href="#draw" data-preview="draw">
+          <img class="menu-ico" src="menu/mode-draw.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Daily Draw</span><span class="menu-desc">Draw the minimap by memory!</span></span>
+        </a>
+        <a class="menu-item" href="#music" data-preview="music">
+          <img class="menu-ico" src="menu/mode-music.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Daily Music</span><span class="menu-desc">Guess the track's song!</span></span>
+        </a>
+        <a class="menu-item menu-free" href="#free" data-preview="free">
+          <img class="menu-ico" src="menu/mode-free.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Freeplay</span><span class="menu-desc">Freeplay any mode endlessly!</span></span>
+        </a>
+        <p class="menu-section menu-divider" aria-hidden="true"></p>
+        <a class="menu-item menu-practice" href="#kartography" data-preview="kart">
+          <img class="menu-ico" src="menu/mode-kartography.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Kartography</span><span class="menu-desc">Refresh your minimap knowledge!</span></span>
+        </a>
+        <a class="menu-item menu-credits" href="#" role="button" data-preview="none">
+          <img class="menu-ico" src="menu/mode-credits.webp" alt="">
+          <span class="menu-banner"><span class="menu-label">Credits</span><span class="menu-desc">Credits!</span></span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- preview cards -->
+    <div class="home-hero" id="home-hero" data-preview="none" aria-hidden="true">
+      <div class="hero-stack">
+        <div class="hero-card back b1"><img src="maps/n64-08-mario-raceway.png" alt=""></div>
+        <div class="hero-card back b2"><img src="maps/gcn-06.png" alt=""></div>
+        <div class="hero-card back b3"><img src="maps/wii-race-03.png" alt=""></div>
+        <div class="hero-card main">
+          <img class="hp-track" src="maps/world-mario-circuit-1-world.png" alt="">
+          <img class="hp-real" src="menu/mc1-red.webp" alt="">
+          <svg class="hp-drawn" viewBox="0 0 512 512"><path d="M118 67 L117 66 L115 66 L113 65 L111 64 L109 63 L108 66 L106 65 L105 68 L103 69 L101 71 L100 75 L97 77 L97 82 L96 84 L98 86 L99 88 L99 92 L101 95 L101 98 L102 101 L103 105 L102 107 L101 111 L101 113 L101 116 L99 121 L98 123 L96 127 L97 130 L96 133 L94 137 L92 141 L90 146 L88 149 L84 153 L83 158 L81 160 L77 165 L74 169 L71 173 L68 179 L66 182 L64 188 L60 192 L58 198 L56 203 L52 207 L49 213 L48 217 L44 222 L41 228 L39 234 L37 240 L35 246 L35 252 L33 258 L33 262 L35 270 L35 277 L36 282 L37 288 L41 292 L45 296 L49 300 L52 304 L56 307 L60 311 L66 311 L70 312 L75 312 L81 316 L86 314 L90 314 L97 316 L104 316 L108 318 L115 317 L121 317 L128 320 L135 321 L141 320 L147 322 L155 323 L162 321 L170 324 L177 325 L184 325 L190 325 L197 324 L204 325 L212 326 L220 327 L227 328 L234 326 L240 326 L247 326 L254 328 L262 327 L268 327 L273 326 L281 326 L287 327 L292 329 L298 331 L305 333 L309 339 L315 341 L317 346 L323 353 L324 359 L329 363 L330 368 L331 372 L335 378 L335 384 L337 388 L339 391 L338 396 L338 401 L339 405 L340 410 L341 413 L342 418 L342 422 L344 425 L345 428 L346 432 L347 437 L349 439 L351 442 L352 443 L354 445 L355 446 L357 445 L359 445 L360 445 L363 443 L364 442 L365 441 L367 437 L369 435 L371 433 L374 427 L375 425 L378 419 L379 415 L382 409 L385 405 L389 400 L391 394 L394 387 L397 384 L398 376 L401 368 L403 362 L403 354 L405 347 L406 340 L407 333 L409 327 L409 320 L412 314 L413 309 L416 302 L416 294 L418 289 L420 281 L422 277 L425 269 L426 265 L430 259 L431 251 L435 247 L437 242 L440 236 L442 231 L445 226 L449 220 L452 216 L454 209 L457 205 L459 200 L462 195 L465 191 L468 186 L470 182 L472 177 L474 173 L477 170 L476 166 L478 161 L477 158 L474 155 L471 151 L468 150 L464 149 L462 148 L458 147 L453 145 L449 147 L445 145 L440 146 L436 146 L430 145 L425 145 L419 145 L414 147 L410 146 L402 147 L396 145 L389 146 L384 146 L377 145 L370 146 L363 145 L356 145 L350 145 L343 146 L337 147 L329 147 L321 146 L316 145 L308 146 L299 147 L294 146 L286 146 L278 145 L272 146 L265 144 L258 144 L251 143 L244 140 L237 141 L231 140 L225 139 L219 139 L213 135 L208 136 L202 134 L197 132 L192 131 L185 130 L182 127 L177 127 L172 124 L168 121 L165 120 L161 116 L156 115 L154 112 L150 108 L146 106 L144 105 L142 102 L139 98 L136 95 L135 92 L133 90 L129 86 L129 85 L126 81 L124 79 L122 77 L120 74 L120 70 L119 70 Z"/></svg>
+          <div class="hp-guess">
+            <div class="hp-row bad"><span>GBA Peach Circuit</span><b>&#10007;</b></div>
+            <div class="hp-row good"><span>SNES Mario Circuit 1</span><b>&#10003;</b></div>
+          </div>
+          <div class="hp-score">87%</div>
+          <div class="hp-player"><span class="hp-play">&#9654;</span><span class="hp-bar"><i></i></span></div>
+          <div class="hp-notes"><span>&#9834;</span><span>&#9835;</span><span>&#9834;</span></div>
+          <div class="hp-free">&#8734; Endless</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- mode tabs -->
+  <nav class="screen-nav" id="screen-nav" hidden>
+    <div class="tabs" id="daily-tabs" role="tablist" hidden>
+      <span class="tabs-label" aria-hidden="true">Daily:</span>
+      <a class="tab" id="dtab-daily" href="#guess" role="tab" aria-label="Daily Guess">Guess</a>
+      <a class="tab" id="dtab-draw" href="#draw" role="tab" aria-label="Daily Draw">Draw</a>
+      <a class="tab" id="dtab-music" href="#music" role="tab" aria-label="Daily Music">Music</a>
+    </div>
+    <div class="tabs" id="free-tabs" role="tablist">
+      <a class="tab" id="tab-daily" href="#free-guess" role="tab">Guess</a>
+      <a class="tab" id="tab-draw" href="#free-draw" role="tab">Draw</a>
+      <a class="tab" id="tab-music" href="#free-music" role="tab">Music</a>
+    </div>
+  </nav>
+
+  <!-- KARTOGROPHY!!! -->
+  <main class="practice" id="practice" hidden><div id="practice-body"></div></main>
+
+  <!-- daily guess -->
+  <main class="game" id="daily" hidden>
+    <header class="mode-head">
+      <div class="mode-head-switches"><span class="mode-tag" id="daily-hud-tag"></span></div>
+      <p class="mode-kicker">Guess the minimap</p>
+      <h2 class="mode-title">Which track is this?</h2>
+    </header>
+    <p class="puzzle-no" id="puzzle-no" hidden>Puzzle #1</p>
+
+        <div class="stage">
+      <aside class="side side-left" id="daily-bonus-slot"></aside>
+      <div class="map-frame">
+        <canvas id="map" width="512" height="512" aria-label="Mystery track minimap"></canvas>
+      </div>
+      <aside class="side side-right">
+        <div class="hud" id="daily-hud"></div>
+        <div class="side-card hints-card">
+          <p class="side-tag">Hints</p>
+        <div class="hints" id="hints">
+          <button class="hint" id="hint-console" disabled>
+          <span class="hint-label">Console</span><span class="hint-value" id="hint-console-value">&#128274;</span>
+          </button>
+          <button class="hint" id="hint-cup" disabled>
+          <span class="hint-label">Cup</span><span class="hint-value" id="hint-cup-value">&#128274;</span>
+          </button>
+        </div>
+        <p class="hint-note" id="hint-note">Hints unlock after 3 wrong guesses.</p>
+        </div>
+      </aside>
+    </div>
+
+
+
+        <form class="guess-form" id="guess-form" autocomplete="off">
+      <div class="combo">
+        <input id="guess-input" type="text" placeholder="Type a track or game..." aria-label="Your guess"
+               role="combobox" aria-expanded="false" aria-controls="suggestions">
+        <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+      </div>
+      <button type="submit" class="go-btn" id="guess-btn">Guess</button>
+    </form>
+
+        <ol class="guesses" id="guesses"></ol>
+
+        <section class="result" id="result" hidden>
+      <h2 id="result-title"></h2>
+      <p class="answer" id="result-answer"></p>
+      <p class="answer-meta" id="result-meta"></p>
+      <p class="bonus-line" id="result-bonus" hidden></p>
+      <div class="result-actions">
+        <button class="go-btn" id="share-btn">Share</button>
+      </div>
+      <p class="next" id="next-puzzle"></p>
+    </section>
+  </main>
+
+  <!-- draw -->
+  <section class="game" id="draw" hidden>
+    <header class="mode-head">
+      <div class="mode-head-switches"><span class="mode-tag" id="draw-hud-tag"></span></div>
+      <p class="mode-kicker">Draw this track from memory</p>
+      <h2 class="mode-title" id="draw-track">&nbsp;</h2>
+    </header>
+
+    <div class="stage">
+      <aside class="side side-left">
+        <div class="side-card peek-card" id="draw-peek-card">
+          <p class="side-tag">Need a hint?</p>
+          <button class="peek-btn" id="draw-peek" type="button">
+            <span class="peek-icon" aria-hidden="true">&#128065;</span>
+            <span class="peek-label">Hover to peek</span>
+            <small id="draw-peek-left">3 peeks left</small>
+          </button>
+          <p class="peek-note"></p>
+        </div>
+        <div id="draw-bonus-slot"></div>
+      </aside>
+      <div class="map-frame pad-frame">
+      <canvas id="pad" aria-label="Drawing area"></canvas>
+      <p class="pad-hint" id="pad-hint">Draw the track here</p>
+      <div class="pad-timer" id="pad-timer" hidden aria-hidden="true">
+        <svg viewBox="0 0 36 36"><circle class="pt-track" cx="18" cy="18" r="15"/><circle class="pt-ring" id="pad-timer-ring" cx="18" cy="18" r="15"/></svg>
+        <span id="pad-timer-num"></span>
+      </div>
+      <button type="button" class="pad-play" id="pad-play" aria-label="Show the track" hidden>
+        <span class="pad-play-icon" aria-hidden="true">&#9654;</span>
+      </button>
+      </div>
+      <aside class="side side-right">
+        <div class="hud" id="draw-hud"></div>
+        <div class="side-card game-card" id="draw-game">
+          <p class="side-tag">Draw it as it looks in</p>
+          <img class="game-card-logo" id="draw-game-logo" alt="" hidden>
+          <p class="game-card-name" id="draw-game-name">&nbsp;</p>
+          <p class="game-card-console" id="draw-game-console">&nbsp;</p>
+          <p class="game-card-note" id="draw-game-note" hidden></p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="draw-tools" id="draw-tools">
+      <button class="tool-btn" id="draw-undo">Undo</button>
+      <button class="tool-btn" id="draw-clear">Clear</button>
+      <button class="tool-btn" id="draw-skip">Skip</button>
+      <button class="go-btn" id="draw-done">Done</button>
+    </div>
+    <div class="stabilizer" id="draw-stab" role="radiogroup" aria-label="Brush stabilizer">
+      <span class="stab-label" title="Pulled-string stabilizer">Stabilizer</span>
+      <button type="button" data-stab="off" role="radio">Off</button>
+      <button type="button" data-stab="low" role="radio">Low</button>
+      <button type="button" data-stab="high" role="radio">High</button>
+    </div>
+
+    <section class="result" id="draw-result" hidden>
+      <p class="big-score" id="draw-score">0%</p>
+      <h2 id="draw-verdict"></h2>
+      <p class="answer-meta" id="draw-best"></p>
+      <p class="legend"><span class="swatch real"></span> real track &nbsp; <span class="swatch yours"></span> your drawing</p>
+      <div class="result-actions">
+        <button class="go-btn" id="draw-share">Share</button>
+      </div>
+      <button type="button" class="tool-btn replay-btn" id="draw-replay" hidden><img class="replay-ico" src="icons/lakitu-eyes.webp" alt=""> Live Replay</button>
+      <p class="next" id="draw-countdown"></p>
+    </section>
+  </section>
+
+  <!-- music -->
+  <section class="game" id="music" hidden>
+    <header class="mode-head">
+      <div class="mode-head-switches"><span class="mode-tag" id="music-hud-tag"></span>
+        <label class="mode-switch has-tip" data-tip="Add on free roam songs whose origin is not from prior Mario Kart games!"><input type="checkbox" id="music-nonmk"> <span class="tip-text">Include non-Mario Kart songs</span></label></div>
+      <p class="mode-kicker">Guess the song</p>
+      <h2 class="mode-title">Which track is this?</h2>
+    </header>
+    <p class="puzzle-no" id="music-no" hidden>Song #1</p>
+
+    <p class="empty-note" id="music-empty" hidden>
+      No songs yet. Add ~30-second clips to the <code>Music</code> folder and run
+      <code>python tools/build_audio.py</code>.
+    </p>
+
+    <div id="music-body">
+      <div class="stage">
+        <aside class="side side-left" id="music-bonus-slot"></aside>
+        <div class="player">
+          <button class="play-btn" id="music-play" aria-label="Play snippet">&#9654;</button>
+          <div class="timeline-wrap">
+            <div class="timeline" id="music-timeline">
+              <div class="tl-unlocked" id="tl-unlocked"></div>
+              <div class="tl-progress" id="tl-progress"></div>
+            </div>
+            <p class="time" id="music-time">0:00 / 0:03</p>
+          </div>
+        </div>
+        <aside class="side side-right"><div class="hud" id="music-hud"></div></aside>
+      </div>
+
+      <form class="guess-form" id="music-form" autocomplete="off">
+        <div class="combo">
+          <input id="music-input" type="text" placeholder="Type a track or game..." aria-label="Your guess"
+                 role="combobox" aria-expanded="false" aria-controls="music-suggestions">
+          <ul id="music-suggestions" class="suggestions" role="listbox" hidden></ul>
+        </div>
+        <button type="submit" class="go-btn" id="music-guess">Guess</button>
+      </form>
+      <button class="tool-btn skip-btn" id="music-skip" type="button">Skip</button>
+
+      <ol class="guesses" id="music-guesses"></ol>
+
+      <section class="result" id="music-result" hidden>
+        <h2 id="music-result-title"></h2>
+        <p class="answer" id="music-answer"></p>
+        <p class="answer-meta" id="music-meta"></p>
+        <p class="bonus-line" id="music-bonus" hidden></p>
+        <div class="result-actions">
+          <button class="go-btn" id="music-share">Share</button>
+        </div>
+        <p class="next" id="music-next"></p>
+      </section>
+    </div>
+  </section>
+
+  <!-- stats -->
+  <dialog id="stats-dialog">
+    <h2>Statistics</h2>
+    <div class="stats-tabs" role="tablist">
+      <button type="button" class="stats-tab" data-tab="guess">Guess</button>
+      <button type="button" class="stats-tab" data-tab="draw">Draw</button>
+      <button type="button" class="stats-tab" data-tab="music">Music</button>
+      <button type="button" class="stats-tab" data-tab="free">Freeplay</button>
+    </div>
+    <div class="stats-body" id="stats-body"></div>
+    <button class="go-btn" data-close>Close</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- footer -->
+  <footer class="foot">
+    <span>Not affiliated with Nintendo.</span>
+    <span>Mario Kart is a trademark of Nintendo.</span>
+    <span>Music by &copy; Nintendo.</span>
+  </footer>
+
+    <!-- scripts -->
+    <script src="data.js"></script>
+  <script src="draw-data.js"></script>
+  <script src="courses.js"></script>
+  <script src="game.js"></script>
+  <script src="draw.js"></script>
+  <script src="music-data.js"></script>
+  <script src="music.js"></script>
+  <script src="stats.js"></script>
+  <script src="practice.js"></script>
+  <script src="modes.js"></script>
+  <script src="menu-physics.js"></script>
+</body>
+</html>
