@@ -270,7 +270,7 @@
       if (!UNLIMITED) save(STATE_KEY, state);
       render();
     }, n => [n.replace(/^3DS /, ""), "Mario Kart 7"]);
-    C.askBonus("music-bonus-slot", "Which Mario Kart game does this particular song play in?", bonusGames(), pick => {
+    C.askBonus("music-bonus-slot", "Which Mario Kart game does this version of the song play in?", bonusGames(), pick => {
       state.bonusPending = false;
       state.bonus = { pick, right: pick === SONG.game };
       finish(true);
