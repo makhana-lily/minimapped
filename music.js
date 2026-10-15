@@ -382,10 +382,10 @@
 
   //share
   $("music-share").addEventListener("click", async () => {
-    const boxes = state.guesses.map(g => g === "skip" ? "⬛" : isRight(g) ? "🟩" : "🟥").join("") +
-                  (state.bonus ? (state.bonus.right ? " ⭐" : " ✩") : "");
-    const heard = state.won ? ` (in ${STEPS[state.guesses.length - 1]}s)` : "";
-    const text = `Minimapped 🎵 ${UNLIMITED ? "(freeplay)" : "#" + PUZZLE} ${state.won ? state.guesses.length : "X"}/${MAX}${heard}\n${boxes}`;
+    const boxes = C.shareBoxes(state.guesses.map(g => g === "skip" ? "⬜" : isRight(g) ? "🟩" : "🟥"), MAX);
+    const text = C.shareHead("Music", PUZZLE, UNLIMITED) + "\n" +
+      (state.won ? `Guessed it in: ${state.guesses.length}/${MAX}! (${STEPS[state.guesses.length - 1]} sec)` : `Didn't get it! X/${MAX}`) +
+      `\n${boxes}` + C.shareBonus(state.bonus);
     try { await navigator.clipboard.writeText(text); toast("Copied to clipboard"); }
     catch { prompt("Copy your result:", text); }
   });

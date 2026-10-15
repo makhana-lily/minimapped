@@ -456,8 +456,8 @@
     $("draw-replay").hidden = !(times.length === strokes.length && times.every((t, i) => Array.isArray(t) && t.length === strokes[i].length && t.every(Number.isFinite)));
     if (UNLIMITED && C_) C_.showNext("draw-bonus-slot", "Lets-a go!", () => nextTrack());
     else countdown();
-    lastShare = `Minimapped ✏️ Draw ${UNLIMITED ? "(freeplay)" : "#" + PUZZLE}\n${courseName(current)} (${current.game}): ${pct}%` +
-                `\n${peeksUsed ? "👀".repeat(peeksUsed) + " peeked" : "🙈 no peeks"}`;
+    lastShare = C_.shareHead("Draw", PUZZLE, UNLIMITED) + `\n${courseName(current)} (${current.game}): ${pct}% accurate!` +
+                `\n${peeksUsed ? `👀 ${peeksUsed} peek${peeksUsed === 1 ? "" : "s"} used.` : "🙈 no peeks used."}`;
 
     const img = new Image(), forId = current.map_id;
     img.onload = () => {

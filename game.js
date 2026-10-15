@@ -274,11 +274,11 @@
 
   //share
   function shareText() {
-    const squares = state.guesses.map(k => k === answerKey() ? "🟩" : "🟥").join("") +
-                    (state.bonus ? (state.bonus.right ? " ⭐" : " ✩") : "");
+    const boxes = C.shareBoxes(state.guesses.map(k => k === answerKey() ? "🟩" : "🟥"), MAX_GUESSES);
     const used = ["console", "cup"].filter(h => state.hints[h]);
-    return `Minimapped ${UNLIMITED ? "(freeplay)" : "#" + PUZZLE} ${state.won ? state.guesses.length : "X"}/${MAX_GUESSES}\n${squares}` +
-           (used.length ? `\n💡 ${used.join(" + ")}` : "");
+    return C.shareHead("Guess", PUZZLE, UNLIMITED) + "\n" +
+           (state.won ? `Guessed it in: ${state.guesses.length}/${MAX_GUESSES}!` : `Didn't get it! X/${MAX_GUESSES}`) + `\n${boxes}` +
+           C.shareBonus(state.bonus) + (used.length ? `\n💡 Hints: ${used.join(" + ")}` : "");
   }
   $("share-btn").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(shareText()); toast("Copied to clipboard"); }

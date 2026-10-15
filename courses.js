@@ -266,5 +266,15 @@
                      "Egg Cup", "Triforce Cup", "Crossing Cup", "Bell Cup"];
   const consoleOf = m => /^Mario Kart 8/.test(m.game) && WIIU_CUPS.includes(m.cup) ? "Wii U / Switch" : m.console;
 
-  window.MinimappedCourses = { consoleOf, baseName, keyOf, buildOptions, askBonus, setHud, showNext, itemBox, seen, markSeen, clearSlot, FREE, PRACTICE, addFree, LOGOS, logoEl, searchOptions, suggestionHTML, short: g => SHORT[g] || g, norm, ORDER, cupIcon };
+  //copy+paste results: discord style header & guess boxes
+  function shareHead(mode, puzzle, free) {
+    if (free) return `__**Minimapped**__: ${mode} (Freeplay)`;
+    const [y, m, d] = (window.MINIMAPPED || {}).launch.split("-").map(Number);
+    const day = new Date(y, m - 1, d + puzzle - 1).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    return `__**Minimapped**__: Daily ${mode} #${puzzle} (${day})`;
+  }
+  const shareBoxes = (marks, max) => marks.join("") + "⬛".repeat(Math.max(0, max - marks.length));
+  const shareBonus = b => b ? `\nBonus? ${b.right ? "YES! ⭐" : "NO! ❌"}` : "";
+
+  window.MinimappedCourses = { shareHead, shareBoxes, shareBonus, consoleOf, baseName, keyOf, buildOptions, askBonus, setHud, showNext, itemBox, seen, markSeen, clearSlot, FREE, PRACTICE, addFree, LOGOS, logoEl, searchOptions, suggestionHTML, short: g => SHORT[g] || g, norm, ORDER, cupIcon };
 })();
