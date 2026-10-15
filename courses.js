@@ -266,7 +266,7 @@
                      "Egg Cup", "Triforce Cup", "Crossing Cup", "Bell Cup"];
   const consoleOf = m => /^Mario Kart 8/.test(m.game) && WIIU_CUPS.includes(m.cup) ? "Wii U / Switch" : m.console;
 
-  //copy+paste results: discord style header & guess boxes
+  //copy paste results (discord style)
   function shareHead(mode, puzzle, free) {
     if (free) return `__**Minimapped**__: ${mode} (Freeplay)`;
     const [y, m, d] = (window.MINIMAPPED || {}).launch.split("-").map(Number);

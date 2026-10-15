@@ -2,7 +2,7 @@
   "use strict";
   const $ = id => document.getElementById(id);
   const load = (k, fb) => { try { return JSON.parse(localStorage.getItem(k)) || fb; } catch { return fb; } };
-  const launch = (window.MINIMAPPED || {}).launch || "2026-10-01";
+  const launch = (window.MINIMAPPED || {}).launch || "2026-10-14";
   function dayNumber(date) {
     const [y, m, d] = launch.split("-").map(Number);
     return Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(y, m - 1, d)) / 86400000) + 1;

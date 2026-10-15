@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const $ = id => document.getElementById(id);
-  const DATA = window.MINIMAPPED_MUSIC || { songs: [], schedule: [], launch: "2026-10-01" };
+  const DATA = window.MINIMAPPED_MUSIC || { songs: [], schedule: [], launch: "2026-10-14" };
 
   if (!DATA.schedule.length) {
     $("music-empty").hidden = false; $("music-body").hidden = true; $("music-no").textContent = "";
@@ -96,12 +96,12 @@
     const N = 14, imgs = [];
     for (let i = 0; i < N; i++) {
       const img = new Image(); img.alt = ""; const id = ids[i % ids.length];
-      img.src = /^n64-/.test(id) ? `maps/${id}.png` : `maps-raw/${id}.webp`;   //n64 bursts the white map, not the color one
+      img.src = /^n64-/.test(id) ? `maps/${id}.png` : `maps-raw/${id}.webp`;   //n64 uses the white map here
       layer.appendChild(img); imgs.push(img);
     }
     document.body.appendChild(layer);
     const go = () => imgs.forEach((img, i) => {
-      //fountain arc: shoots up, peaks, then curves down to the side
+      //pops up then arcs down to the side
       const side = i % 2 ? 1 : -1, dx = side * (90 + Math.random() * 280);
       const h = 110 + Math.random() * 90, peak = 0.4 + Math.random() * 0.08;
       const path = [];

@@ -1,5 +1,5 @@
 window.MINIMAPPED = {
- "launch": "2026-10-01",
+ "launch": "2026-10-14",
  "maps": [
   {
    "map_id": "ds-01",

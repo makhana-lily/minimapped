@@ -155,7 +155,7 @@
     }, 340);
   });
   document.addEventListener("animationend", e => { if (e.target.closest && e.target.closest(".pr-fav.spin")) e.target.closest(".pr-fav").classList.remove("spin"); });
-  //fav switchers: snes & n64 cards can show their one-color map instead
+  //fav switchers, flips snes & n64 cards to the white map
   const FAV_MONO_KEY = "minimapped-fav-mono";
   const favMono = (() => { try { return JSON.parse(localStorage.getItem(FAV_MONO_KEY)) || {}; } catch { return {}; } })();
   const flippable = id => { const w = where[id]; return w && (w.gs === "snes" || w.gs === "n64") && w.c.maps[w.i].src.type !== "battle"; };

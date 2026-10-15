@@ -1167,14 +1167,14 @@ html { scroll-padding-top: 72px; }
 .victory-burst img { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; object-fit: contain;
   opacity: 0; filter: drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000) drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
 
-/* phones: keep the music checkbox clear of the item box */
+/* music checkbox on phones */
 @media (max-width: 560px) {
   #music .mode-head-switches { padding: 0 36px; max-width: 100%; }
   #music .mode-head-switches:has(.mode-switch:not([hidden])) .mode-tag { display: none; }
 }
 @media (max-width: 359.98px) { #music .mode-head-switches .mode-switch { font-size: .7rem; } }
 
-/* fav switchers (snes & n64) */
+/* fav switchers */
 .pr-favflips { margin-left: auto; display: flex; gap: 8px; }
 .pr-favflip { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 7px; border-radius: 999px; cursor: pointer;
   border: 2px solid var(--game); background: #1b1a17; color: #f2eee4; font: 800 .8rem system-ui, sans-serif; transition: background .2s ease, transform .15s ease; }

@@ -1,5 +1,5 @@
 window.MINIMAPPED_MUSIC = {
- "launch": "2026-10-01",
+ "launch": "2026-10-14",
  "songs": [
   {
    "id": "3ds-bowser-s-castle",
