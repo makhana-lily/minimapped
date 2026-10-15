@@ -110,7 +110,10 @@
     box.className = "result free-promo";
     box.innerHTML = `<h2><span class="if-win">Victory lap?</span><span class="if-lose">Redemption race?</span></h2>
       <div class="result-actions"><a class="go-btn" href="${FREE_OF[sec]}">Try Freeplay</a></div>`;
-    if (!C.FREE) $(rid).after(box);
+    const r = $(rid), mirror = () => { box.hidden = r.hidden; box.dataset.outcome = r.dataset.outcome || ""; };
+    new MutationObserver(mirror).observe(r, { attributes: true, attributeFilter: ["hidden", "data-outcome"] });
+    mirror();
+    if (!C.FREE) r.after(box);
     return box;
   });
   function placeResults() {
@@ -120,7 +123,11 @@
       const slot = left.querySelector('[id$="-bonus-slot"]');
       if (side && r.parentNode !== left) { if (slot) slot.before(r); else left.appendChild(r); }
       if (!side && r.parentNode === left) spots[i].after(r);
-      if (!C.FREE) { r.after(promos[i]); promos[i].classList.toggle("in-side", side); }
+      if (!C.FREE) {
+        const right = $(sec).querySelector(".side-right");
+        if (side && right) right.appendChild(promos[i]); else r.after(promos[i]);
+        promos[i].classList.toggle("in-side", side);
+      }
       r.classList.toggle("in-side", side);
     });
   }

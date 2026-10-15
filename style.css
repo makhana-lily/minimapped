@@ -1187,3 +1187,7 @@ html { scroll-padding-top: 72px; }
 #draw-score { font-family: "Orbitron", system-ui, sans-serif; font-weight: 900; }
 .is-free #draw-result .result-actions { display: flex !important; }
 .is-free #draw-share { display: none; }
+.free-promo[hidden] { display: none !important; }
+.free-promo[data-outcome="lose"] .if-win { display: none; }
+.free-promo[data-outcome="lose"] .if-lose { display: inline; }
+.side-right .free-promo { margin-top: 14px; animation-name: slide-in-r; }
