@@ -108,6 +108,7 @@
 
   //live replay timing
   let times = [], clock0 = null, replayRaf = 0, replayWaiting = false;
+  let gifLabel = null, gifBusy = false;
   function stamp() {
     const t = performance.now();
     if (clock0 === null) clock0 = t - (times.length ? times[times.length - 1].at(-1) + 400 : 0);
@@ -454,6 +455,8 @@
     $("draw-result").dataset.outcome = pct >= 50 ? "win" : "lose";
     $("draw-tools").hidden = true;
     $("draw-replay").hidden = !(times.length === strokes.length && times.every((t, i) => Array.isArray(t) && t.length === strokes[i].length && t.every(Number.isFinite)));
+    $("draw-gif").hidden = $("draw-replay").hidden;
+    gifLabel = { track: $("draw-track").textContent.trim() || courseName(current), pct };
     if (UNLIMITED && C_) C_.showNext("draw-bonus-slot", "Lets-a go!", () => nextTrack());
     else countdown();
     lastShare = C_.shareHead("Draw", PUZZLE, UNLIMITED) + `\n${courseName(current)} (${current.game}): ${pct}% accurate!` +
@@ -494,6 +497,152 @@
     replayRaf = requestAnimationFrame(frame);
   }
   $("draw-replay").addEventListener("click", playReplay);
+
+  $("draw-gif").addEventListener("click", async () => {
+    if (!finished || gifBusy) return;
+    if (!resultOverlay) return toast("One sec, still loading");
+    gifBusy = true; toast("Making your GIF...");
+    await new Promise(r => setTimeout(r, 40));
+    try {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(await replayGif());
+      a.download = `minimapped-${UNLIMITED ? gifLabel.track.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : "daily-draw-" + PUZZLE}.gif`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      toast("GIF saved");
+    } catch { toast("Couldn't make the GIF"); }
+    gifBusy = false;
+  });
+
+  function solid(css, inside) {
+    const el = document.createElement("i");
+    el.style.cssText = `position:absolute;visibility:hidden;color:${css}`;
+    inside.appendChild(el);
+    const c = getComputedStyle(el).color; el.remove();
+    const t = document.createElement("canvas").getContext("2d");
+    t.fillStyle = "#000"; t.fillStyle = c; t.fillRect(0, 0, 1, 1);
+    const d = t.getImageData(0, 0, 1, 1).data;
+    return `rgb(${d[0]},${d[1]},${d[2]})`;
+  }
+
+  async function replayGif() {
+    await Promise.all(['20px "Racers Delight"', '900 20px "Orbitron"'].map(f => document.fonts.load(f))).catch(() => {});
+    const frame = pad.parentElement, r = pad.getBoundingClientRect();
+    const W = 400, H = Math.round(W * r.height / r.width), F = 46, TH = H + F, k = W / r.width;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = TH;
+    const g = cv.getContext("2d", { willReadFrequently: true });
+    const bg = tintedOverlay(resultOverlay.img, resultOverlay.n, resultOverlay.fit);
+    const back = solid("var(--card)", frame), check = solid("var(--check)", frame), line = solid("var(--line)", frame);
+    const ink = solid("var(--ink)", frame), red = solid("var(--accent)", frame), muted = solid("var(--muted)", frame);
+    const game = solid(getComputedStyle($("draw")).getPropertyValue("--game").trim() || "var(--accent)", frame);
+    const start = times[0][0], total = Math.max(1, times[times.length - 1].at(-1) - start);
+    const step = 1000 / 15, speed = Math.max(1, total / 8000), shots = [];
+
+    const board = document.createElement("canvas"); board.width = W; board.height = TH;
+    const b = board.getContext("2d"), sq = 14 * k;
+    b.fillStyle = back; b.fillRect(0, 0, W, TH);
+    b.fillStyle = check;
+    for (let y = 0; y * sq < H; y++) for (let x = 0; x * sq < W; x++)
+      if ((x + y) % 2) b.fillRect(Math.round(x * sq), Math.round(y * sq), Math.round((x + 1) * sq) - Math.round(x * sq), Math.min(H, Math.round((y + 1) * sq)) - Math.round(y * sq));
+    b.drawImage(bg, 0, 0, W, H);
+    b.fillStyle = back; b.fillRect(0, H, W, F);
+    b.fillStyle = line; b.fillRect(0, H, W, 1);
+    const RD = s => `${s}px "Racers Delight", "Titan One", sans-serif`, OR = s => `900 ${s}px "Orbitron", sans-serif`;
+    const bits = [["MINI", ink, RD], ["MAPPED", red, RD], ["  ·  ", muted, RD], [gifLabel.track, ink, RD], ["  ·  ", muted, RD], [gifLabel.pct + "%", game, OR]];
+    let size = 20;
+    const width = () => bits.reduce((w, [t, , f]) => { b.font = f(size); return w + b.measureText(t).width; }, 0);
+    while (size > 10 && width() > W - 24) size--;
+    let x = (W - width()) / 2;
+    b.textBaseline = "middle";
+    for (const [t, c, f] of bits) { b.font = f(size); b.fillStyle = c; b.fillText(t, x, H + F / 2 + 1); x += b.measureText(t).width; }
+
+    const paint = t => {
+      g.drawImage(board, 0, 0);
+      g.save(); g.beginPath(); g.rect(0, 0, W, H); g.clip();
+      g.lineCap = g.lineJoin = "round"; g.lineWidth = 4 * k; g.strokeStyle = ink;
+      strokes.forEach((s, i) => {
+        const p = s.filter((_, n) => times[i][n] - start <= t);
+        if (!p.length) return;
+        g.beginPath();
+        p.forEach(([px, py], n) => (n ? g.lineTo : g.moveTo).call(g, px * W, py * H));
+        if (p.length === 1) g.lineTo(p[0][0] * W + 0.1, p[0][1] * H);
+        g.stroke();
+      });
+      g.restore();
+      return g.getImageData(0, 0, W, TH).data;
+    };
+    for (let t = 0; ; t += step * speed) { shots.push(paint(Math.min(t, total))); if (t >= total) break; }
+    return encodeGif(W, TH, shots, Math.round(step / 10), 300);
+  }
+
+  function encodeGif(w, h, frames, delay, hold) {
+    const n = w * h, last = frames[frames.length - 1], key = (r, g, b) => (r >> 3) << 10 | (g >> 3) << 5 | b >> 3;
+    const tally = new Map();
+    for (let i = 0; i < n * 4; i += 4) {
+      const k = key(last[i], last[i + 1], last[i + 2]), e = tally.get(k);
+      if (e) { e[0]++; e[1] += last[i]; e[2] += last[i + 1]; e[3] += last[i + 2]; }
+      else tally.set(k, [1, last[i], last[i + 1], last[i + 2]]);
+    }
+    const pal = [...tally.values()].sort((a, b) => b[0] - a[0]).slice(0, 255).map(e => [e[1] / e[0] | 0, e[2] / e[0] | 0, e[3] / e[0] | 0]);
+    const memo = new Int16Array(32768).fill(-1);
+    const pick = (r, g, b) => {
+      const k = key(r, g, b);
+      if (memo[k] < 0) {
+        let best = 0, bd = Infinity;
+        pal.forEach((p, j) => { const d = (p[0] - r) ** 2 + (p[1] - g) ** 2 + (p[2] - b) ** 2; if (d < bd) { bd = d; best = j; } });
+        memo[k] = best;
+      }
+      return memo[k];
+    };
+
+    let buf = new Uint8Array(1 << 16), len = 0;
+    const byte = b => { if (len === buf.length) { const nb = new Uint8Array(len * 2); nb.set(buf); buf = nb; } buf[len++] = b; };
+    const word = v => { byte(v & 255); byte(v >> 8 & 255); };
+    const text = s => { for (const c of s) byte(c.charCodeAt(0)); };
+
+    text("GIF89a"); word(w); word(h); byte(0xF7); byte(0); byte(0);
+    for (let j = 0; j < 256; j++) { const p = pal[j] || [0, 0, 0]; byte(p[0]); byte(p[1]); byte(p[2]); }
+    byte(0x21); byte(0xFF); byte(11); text("NETSCAPE2.0"); byte(3); byte(1); word(0); byte(0);
+
+    const lzw = px => {
+      let size = 9, next = 258, acc = 0, bits = 0, block = [];
+      const dict = new Map();
+      const flush = () => { byte(block.length); block.forEach(byte); block = []; };
+      const emit = c => {
+        acc |= c << bits; bits += size;
+        while (bits >= 8) { block.push(acc & 255); acc >>>= 8; bits -= 8; if (block.length === 255) flush(); }
+      };
+      byte(8); emit(256);
+      let cur = px[0];
+      for (let i = 1; i < px.length; i++) {
+        const k = px[i], hit = dict.get(cur << 8 | k);
+        if (hit !== undefined) { cur = hit; continue; }
+        emit(cur);
+        if (next < 4096) { dict.set(cur << 8 | k, next++); if (next > 1 << size && size < 12) size++; }
+        else { emit(256); dict.clear(); next = 258; size = 9; }
+        cur = k;
+      }
+      emit(cur); emit(257);
+      if (bits > 0) block.push(acc & 255);
+      if (block.length) flush();
+      byte(0);
+    };
+
+    let prev = null;
+    frames.forEach((f, fi) => {
+      const cur = new Uint8Array(n), px = new Uint8Array(n);
+      for (let i = 0, j = 0; j < n; i += 4, j++) {
+        cur[j] = pick(f[i], f[i + 1], f[i + 2]);
+        px[j] = prev && prev[j] === cur[j] ? 255 : cur[j];
+      }
+      prev = cur;
+      byte(0x21); byte(0xF9); byte(4); byte(5); word(fi === frames.length - 1 ? hold : delay); byte(255); byte(0);
+      byte(0x2C); word(0); word(0); word(w); word(h); byte(0);
+      lzw(px);
+    });
+    byte(0x3B);
+    return new Blob([buf.slice(0, len)], { type: "image/gif" });
+  }
 
   //countdown
   function countdown() {

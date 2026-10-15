@@ -1183,3 +1183,7 @@ html { scroll-padding-top: 72px; }
 .pr-favflip[aria-pressed="true"] { background: var(--game); color: #1b1a17; }
 .pr-favflip[aria-pressed="true"] .pr-flip-a { fill: #1b1a17; }
 .pr-favflip:hover, .pr-favflip:focus-visible { transform: translateY(-2px); outline: none; }
+
+#draw-score { font-family: "Orbitron", system-ui, sans-serif; font-weight: 900; }
+.is-free #draw-result .result-actions { display: flex !important; }
+.is-free #draw-share { display: none; }
