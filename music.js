@@ -82,7 +82,7 @@
   const bonusGames = () => [...new Set((FAMILY[KEY(SONG)] || [KEY(SONG)]).flatMap(k => OPT_BY_KEY[k].games))]
     .sort((a, b) => C.ORDER.indexOf(a) - C.ORDER.indexOf(b));
 
-  //victory burst!! every minimap of the course pops out of the middle (all versions so it doesnt spoil the bonus)
+  //victory burst!! every minimap of the course pops out of the middle
   const ALL_MAPS = [...(window.MINIMAPPED?.maps || []), ...(window.MINIMAPPED_DRAW_MAPS || []), ...(window.MINIMAPPED_KART_MAPS || [])];
   const mapKey = m => C.keyOf(m.track.replace(/\s*\([^)]*\)/g, ""), m.game);
   function burst() {
@@ -101,7 +101,6 @@
     }
     document.body.appendChild(layer);
     const go = () => imgs.forEach((img, i) => {
-      //pops up then arcs down to the side
       const side = i % 2 ? 1 : -1, dx = side * (90 + Math.random() * 280);
       const h = 110 + Math.random() * 90, peak = 0.4 + Math.random() * 0.08;
       const path = [];
@@ -116,7 +115,6 @@
       img.animate([{ scale: 0.5 }, { scale: 1, offset: 0.2 }, { scale: 1 }], { ...opt, easing: "ease-out" });
       img.animate([{ opacity: 1 }, { opacity: 1, offset: 0.45 }, { opacity: 0 }], { ...opt, easing: "ease-in" });
     });
-    //wait a sec for the maps to load so they all pop together
     Promise.race([Promise.all(imgs.map(i => i.decode().catch(() => {}))), new Promise(r => setTimeout(r, 500))]).then(go);
     setTimeout(() => layer.remove(), 2100);
   }
@@ -256,7 +254,7 @@
       else finish(true);
     }
     else if (state.guesses.length >= MAX) finish(false);
-    else toast(`Now ${unlocked()} seconds unlocked`);
+    else toast(`${unlocked()} seconds unlocked`);
     if (!UNLIMITED) save(STATE_KEY, state);
     render();
   }

@@ -7,7 +7,7 @@
   <meta name="description" content="A daily guessing game: name the Mario Kart track from its minimap.">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="mobile-only/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Minimapped">
   <meta property="og:description" content="Guess the Mario Kart track from its minimap, draw maps from memory, and more!">
@@ -259,10 +259,7 @@
     </header>
     <p class="puzzle-no" id="music-no" hidden>Song #1</p>
 
-    <p class="empty-note" id="music-empty" hidden>
-      No songs yet. Add ~30-second clips to the <code>Music</code> folder and run
-      <code>python tools/build_audio.py</code>.
-    </p>
+    <p class="empty-note" id="music-empty" hidden>Songs couldn't load right now. Try refreshing the page!</p>
 
     <div id="music-body">
       <div class="stage">
