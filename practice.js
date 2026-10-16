@@ -159,18 +159,18 @@
   const FAV_MONO_KEY = "minimapped-fav-mono";
   const favMono = (() => { try { return JSON.parse(localStorage.getItem(FAV_MONO_KEY)) || {}; } catch { return {}; } })();
   const flippable = id => { const w = where[id]; return w && (w.gs === "snes" || w.gs === "n64") && w.c.maps[w.i].src.type !== "battle"; };
-  const favSrc = id => flippable(id) && favMono[where[id].gs] ? `maps/${id}.png` : `maps-raw/${id}.webp`;
+  const isMono = id => flippable(id) && !!(favMono[id] ?? favMono[where[id].gs]);
+  const favSrc = id => isMono(id) ? `maps/${id}.png` : `maps-raw/${id}.webp`;
   document.addEventListener("click", e => {
     const b = e.target.closest(".pr-favflip"); if (!b) return;
-    const gs = b.dataset.gs; favMono[gs] = !favMono[gs];
+    e.preventDefault();
+    const id = b.dataset.id; favMono[id] = !isMono(id);
     try { localStorage.setItem(FAV_MONO_KEY, JSON.stringify(favMono)); } catch {}
-    b.setAttribute("aria-pressed", !!favMono[gs]);
-    document.querySelectorAll(`.pr-favs .pr-favcard-map img[data-gs="${gs}"]`).forEach(img => {
-      const id = img.dataset.id;
-      img.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(0)" }], { duration: 160, easing: "ease-in" }).onfinish = () => {
-        img.src = favSrc(id); img.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 160, easing: "ease-out" });
-      };
-    });
+    b.setAttribute("aria-pressed", favMono[id]);
+    const img = b.closest(".pr-favitem")?.querySelector(".pr-favcard-map img"); if (!img) return;
+    img.animate([{ transform: "scaleX(1)" }, { transform: "scaleX(0)" }], { duration: 160, easing: "ease-in" }).onfinish = () => {
+      img.src = favSrc(id); img.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], { duration: 160, easing: "ease-out" });
+    };
   });
   function renderFavs() {
     const favs = loadFavs().filter(id => where[id]);
@@ -178,13 +178,12 @@
       const w = where[id], game = w.c.game, m = w.c.maps[w.i];
       const name = isTitle(m.src.note) ? m.src.note : local(w.c) + (w.c.maps.length > 1 ? ` (${layoutLabel(m, w.i)})` : "");
       return `<div class="pr-favitem"><a class="pr-favcard" href="${w.href}" style="--game:${colour(game)}">
-        <span class="pr-favcard-map"><img src="${favSrc(id)}"${flippable(id) ? ` data-gs="${w.gs}" data-id="${esc(id)}"` : ""} alt="" loading="lazy"></span>
+        <span class="pr-favcard-map"><img src="${favSrc(id)}" alt="" loading="lazy"></span>
         <span class="pr-favcard-name">${esc(name)}</span>${logo(game)}</a>
-        <button type="button" class="pr-favx" data-id="${esc(id)}" title="Remove from favorites" aria-label="Remove ${esc(name)} from favorites"><i></i><i></i></button></div>`;
+        <button type="button" class="pr-favx" data-id="${esc(id)}" title="Remove from favorites" aria-label="Remove ${esc(name)} from favorites"><i></i><i></i></button>${flippable(id) ? `
+        <button type="button" class="pr-favflip" data-id="${esc(id)}" style="--game:${colour(game)}" aria-pressed="${isMono(id)}" title="Flip map: color or one-color" aria-label="Flip the ${esc(name)} map">${FLIP_ICON}</button>` : ""}</div>`;
     }).join("");
-    const sw = ["snes", "n64"].filter(gs => favs.some(id => flippable(id) && where[id].gs === gs)).map(gs =>
-      `<button type="button" class="pr-favflip" data-gs="${gs}" aria-pressed="${!!favMono[gs]}" style="--game:${colour(GAMES.find(g => g.slug === gs).games[0])}" title="Turn the ${gs.toUpperCase()} cards: color or one-color map">${FLIP_ICON}${gs.toUpperCase()}</button>`).join("");
-    return `<section class="pr-favs"><h2 class="pr-favs-title"><img src="menu/super-star.webp" alt="">Favorites${sw ? `<span class="pr-favflips">${sw}</span>` : ""}</h2>` +
+    return `<section class="pr-favs"><h2 class="pr-favs-title"><img src="menu/super-star.webp" alt="">Favorites</h2>` +
       (cards ? `<div class="pr-favgrid">${cards}</div>` : `<p class="pr-favs-empty">Tap the star on any track to save it here.</p>`) + `</section>`;
   }
 

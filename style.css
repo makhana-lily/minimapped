@@ -1178,14 +1178,13 @@ html { scroll-padding-top: 72px; }
 @media (max-width: 359.98px) { #music .mode-head-switches .mode-switch { font-size: .7rem; } }
 
 /* fav switchers */
-.pr-favflips { margin-left: auto; display: flex; gap: 8px; }
-.pr-favflip { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 7px; border-radius: 999px; cursor: pointer;
-  border: 2px solid var(--game); background: #1b1a17; color: #f2eee4; font: 800 .8rem "Ranade", system-ui, sans-serif; transition: background .2s ease, transform .15s ease; }
+.pr-favflip { position: absolute; top: 8px; left: 8px; width: 30px; height: 30px; padding: 0; display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  border: 2px solid var(--game); background: #1b1a17; color: #f2eee4; transition: background .2s ease, transform .15s ease; }
 .pr-favflip svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .pr-favflip .pr-flip-a { fill: #f2eee4; }
 .pr-favflip[aria-pressed="true"] { background: var(--game); color: #1b1a17; }
 .pr-favflip[aria-pressed="true"] .pr-flip-a { fill: #1b1a17; }
-.pr-favflip:hover, .pr-favflip:focus-visible { transform: translateY(-2px); outline: none; }
+.pr-favflip:hover, .pr-favflip:focus-visible { transform: scale(1.1); outline: none; }
 
 #draw-score { font-family: "Orbitron", system-ui, sans-serif; font-weight: 900; }
 .is-free #draw-result .result-actions { display: flex !important; }
