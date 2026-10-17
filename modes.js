@@ -44,7 +44,14 @@
       $("dtab-" + id).setAttribute("aria-selected", r.screen === "daily" && r.mode === name);
     if (!home && !menu) window.dispatchEvent(new CustomEvent("minimapped:mode", { detail: SECTION[r.mode] }));
     else window.dispatchEvent(new CustomEvent("minimapped:mode", { detail: "home" }));
-    if (r.screen === "pr") { const play = (window.MinimappedPlay || {})[r.mode]; if (play) play(r.id); }
+    if (r.screen === "pr") {
+      const playApi = window.MinimappedPlay || {};
+      const mode = r.mode;
+      if (Object.prototype.hasOwnProperty.call(playApi, mode)) {
+        const play = playApi[mode];
+        if (typeof play === "function") play(r.id);
+      }
+    }
     window.scrollTo(0, 0);
   }
 
