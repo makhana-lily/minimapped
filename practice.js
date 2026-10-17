@@ -483,8 +483,13 @@
 
   //routing
   function render(parts) {
-    const [gs, cs, vi] = parts;
-    $("practice-body").innerHTML = cs ? renderCourse(gs, cs, +vi || 0) : gs ? renderTracks(gs) : renderGames();
+    const p = Array.isArray(parts) ? parts : [];
+    const [rawGs, rawCs, rawVi] = p;
+    const gs = GAMES.some(g => g.slug === rawGs) ? rawGs : null;
+    const cs = gs && catalog[gs] && catalog[gs].has(rawCs) ? rawCs : null;
+    const viNum = Number.parseInt(rawVi, 10);
+    const vi = Number.isFinite(viNum) && viNum >= 0 ? viNum : 0;
+    $("practice-body").innerHTML = cs ? renderCourse(gs, cs, vi) : gs ? renderTracks(gs) : renderGames();
     if (gs && !cs) fitCups();
     return cs ? `${ROOT}/${gs}` : gs ? ROOT : "#";
   }
