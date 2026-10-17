@@ -485,8 +485,8 @@
   function render(parts) {
     const p = Array.isArray(parts) ? parts : [];
     const [rawGs, rawCs, rawVi] = p;
-    const gs = GAMES.some(g => g.slug === rawGs) ? rawGs : null;
-    const cs = gs && catalog[gs] && catalog[gs].has(rawCs) ? rawCs : null;
+    const gs = GAMES.find(g => g.slug === rawGs)?.slug || null;
+    const cs = gs ? catalog[gs].get(rawCs)?.slug || null : null;
     const viNum = Number.parseInt(rawVi, 10);
     const vi = Number.isFinite(viNum) && viNum >= 0 ? viNum : 0;
     $("practice-body").innerHTML = cs ? renderCourse(gs, cs, vi) : gs ? renderTracks(gs) : renderGames();
