@@ -403,8 +403,9 @@
 
   //track page
   function renderCourse(gs, cs, i = 0) {
-    const c = catalog[gs] && catalog[gs].get(cs); if (!c) return renderTracks(gs);
-    i = Math.min(i, c.maps.length - 1); shown = { gs, cs, i };
+    gs = GAMES.find(g => g.slug === gs)?.slug; if (!gs) return renderGames();
+    const c = catalog[gs].get(cs); if (!c) return renderTracks(gs);
+    cs = c.slug; i = Math.max(0, Math.min(Number.parseInt(i, 10) || 0, c.maps.length - 1)); shown = { gs, cs, i };
     const m = c.maps[i];
     const variants = c.maps.length > 1 ? `<div class="pr-variants">` + c.maps.map((v, k) =>
       `<button type="button" class="pr-variant" data-i="${k}" aria-pressed="${k === i}">${esc(layoutLabel(v, k))}</button>`).join("") + `</div>` : "";
@@ -476,8 +477,8 @@
   }
   document.addEventListener("click", e => {
     const b = e.target.closest(".pr-variant"); if (!b) return;
-    $("practice-body").innerHTML = renderCourse(shown.gs, shown.cs, +b.dataset.i);
-    const k = +b.dataset.i;
+    const k = Math.max(0, Number.parseInt(b.dataset.i, 10) || 0);
+    $("practice-body").innerHTML = renderCourse(shown.gs, shown.cs, k);
     history.replaceState(null, "", `${ROOT}/${shown.gs}/${shown.cs}${k ? "/" + k : ""}`);
   });
 
