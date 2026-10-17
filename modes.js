@@ -47,7 +47,8 @@
     if (r.screen === "pr") {
       const playApi = window.MinimappedPlay || {};
       const mode = r.mode;
-      if (Object.prototype.hasOwnProperty.call(playApi, mode)) {
+      const allowedPracticeModes = ["draw"];
+      if (allowedPracticeModes.includes(mode) && Object.prototype.hasOwnProperty.call(playApi, mode)) {
         const play = playApi[mode];
         if (typeof play === "function") play(r.id);
       }
