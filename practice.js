@@ -43,7 +43,7 @@
   for (const g of GAMES) catalog[g.slug] = new Map();
   const gameSlug = game => (GAMES.find(g => g.games.includes(game)) || {}).slug;
   const CROWN = { "world-crowncity-mushroom-cup": "Mushroom Cup", "world-crowncity-shell-cup": "Shell Cup",
-                  "world-crown-city-route-4": "Route 4", "world-crowncity-vs-only": "VS Only" };
+                  "world-crown-city-route-4": "Full City", "world-crowncity-vs-only": "VS Only" };
   const layoutLabel = (v, k) => CROWN[v.id] || v.src.note || v.src.cup || "Version " + (k + 1);
   function add(m) {
     const gs = gameSlug(m.game); if (!gs) return;
