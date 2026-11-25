@@ -44,10 +44,12 @@
   const gameSlug = game => (GAMES.find(g => g.games.includes(game)) || {}).slug;
   const CROWN = { "world-crowncity-mushroom-cup": "Mushroom Cup", "world-crowncity-shell-cup": "Shell Cup",
                   "world-crown-city-route-4": "Full City", "world-crowncity-vs-only": "VS Only" };
-  const layoutLabel = (v, k) => CROWN[v.id] || v.src.note || v.src.cup || "Version " + (k + 1);
+  const REMIX = { "world-mkworld-mario-bros-circuit-2-map": "Mario Bros. Circuit", "world-mkworld-airship-fortress-2-map": "DS Airship Fortress",
+                  "world-mkworld-salty-salty-speedway-2-map": "Salty Salty Speedway", "world-shy-guy-bazaar-world-route-2": "3DS Shy Guy Bazaar" };
+  const layoutLabel = (v, k) => CROWN[v.id] || (v.id in REMIX ? REMIX[v.id] + " 2" : "") || v.src.note || v.src.cup || "Version " + (k + 1);
   function add(m) {
     const gs = gameSlug(m.game); if (!gs) return;
-    const track = m.map_id in CROWN ? "Crown City" : m.track;
+    const track = m.map_id in CROWN ? "Crown City" : REMIX[m.map_id] || m.track;
     const cs = slugOf(C.keyOf(track, m.game)), list = catalog[gs];
     if (!list.has(cs)) list.set(cs, { slug: cs, name: C.baseName(track, m.game), game: m.game, maps: [] });
     list.get(cs).maps.push({ id: m.map_id, src: m, draw: !!DRAW[m.map_id] || !!DRAW_EXTRA[m.map_id], secret: !DRAW[m.map_id] && !!DRAW_EXTRA[m.map_id] && !DRAW_EXTRA[m.map_id].quiet });
@@ -69,6 +71,7 @@
   }
   document.addEventListener("click", e => { if (e.target.closest(".pr-random")) randomCourse(); });
   const headRow = html => `<div class="pr-headrow">${html}${itemBtn}</div>`;
+  const fullName = (c, v, k, show) => v.id in REMIX ? layoutLabel(v, k) : local(c) + (show ? ` (${layoutLabel(v, k)})` : "");
   const local = c => {
     const own = C.baseName("x", c.game).slice(0, -1);
     let n = own && c.name.startsWith(own) ? c.name.slice(own.length) : c.name;
@@ -176,7 +179,7 @@
     const favs = loadFavs().filter(id => where[id]);
     const cards = favs.map(id => {
       const w = where[id], game = w.c.game, m = w.c.maps[w.i];
-      const name = isTitle(m.src.note) ? m.src.note : local(w.c) + (w.c.maps.length > 1 ? ` (${layoutLabel(m, w.i)})` : "");
+      const name = isTitle(m.src.note) ? m.src.note : fullName(w.c, m, w.i, w.c.maps.length > 1);
       return `<div class="pr-favitem"><a class="pr-favcard" href="${w.href}" style="--game:${colour(game)}">
         <span class="pr-favcard-map"><img src="${favSrc(id)}" alt="" loading="lazy"></span>
         <span class="pr-favcard-name">${esc(name)}</span>${logo(game)}</a>
@@ -190,7 +193,7 @@
   //seen maps popup
   function seenCard(id) {
     const w = where[id], game = w.c.game, m = w.c.maps[w.i];
-    const name = isTitle(m.src.note) ? m.src.note : local(w.c) + (w.c.maps.length > 1 ? ` (${layoutLabel(m, w.i)})` : "");
+    const name = isTitle(m.src.note) ? m.src.note : fullName(w.c, m, w.i, w.c.maps.length > 1);
     return `<div class="pr-favitem"><a class="pr-favcard" href="${w.href}" style="--game:${colour(game)}">
       <span class="pr-favcard-map"><img src="maps-raw/${esc(id)}.webp" alt="" loading="lazy"></span>
       <span class="pr-favcard-name">${esc(name)}</span>${logo(game)}</a></div>`;
@@ -380,7 +383,7 @@
     return headRow(`<div class="pr-head" style="--game:${colour(g.games[0])}">${logo(g.games[0])}</div>`) + `
       <div class="pr-cups" style="--game:${colour(g.games[0])}">` + cupsFor(gs).map(([cup, list]) =>
         `<section class="pr-cup"><h3>${headIcon(gs, cup)}<span>${esc(cup)}</span></h3><ol>` + list.map(e =>
-          `<li><a class="pr-track${isSeen(e.c.maps[e.i].id) ? " seen" : ""}" href="${ROOT}/${gs}/${e.c.slug}${e.i ? "/" + e.i : ""}"${isSeen(e.c.maps[e.i].id) ? ' title="Seen in a Daily"' : ""}>${esc(local(e.c) + (cup === "Extras" && e.c.maps.length > 1 ? ` (${layoutLabel(e.c.maps[e.i], e.i)})` : ""))}</a></li>`).join("") +
+          `<li><a class="pr-track${isSeen(e.c.maps[e.i].id) ? " seen" : ""}" href="${ROOT}/${gs}/${e.c.slug}${e.i ? "/" + e.i : ""}"${isSeen(e.c.maps[e.i].id) ? ' title="Seen in a Daily"' : ""}>${esc(fullName(e.c, e.c.maps[e.i], e.i, cup === "Extras" && e.c.maps.length > 1))}</a></li>`).join("") +
         `</ol></section>`).join("") + `</div>` + (GAME_NOTE[gs] ? `<ul class="pr-gamenote" style="--game:${colour(g.games[0])}"><li>${GAME_NOTE[gs]}</li></ul>` : "") + gameArrows(gs);
   }
   const GAME_NOTE = { snes: "Note: SNES minimaps are traced from larger, colored maps to preserve quality.", n64: "Note: N64 minimaps traced from larger, colored maps to preserve quality." };

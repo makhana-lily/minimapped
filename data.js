@@ -2986,6 +2986,38 @@ window.MINIMAPPED = {
    "console": "Mobile",
    "cup": "Battle",
    "type": "battle"
+  },
+  {
+   "map_id": "world-mkworld-mario-bros-circuit-2-map",
+   "track": "Mario Bros. Circuit 2",
+   "game": "Mario Kart World",
+   "console": "Switch 2",
+   "cup": "VS only",
+   "type": "race"
+  },
+  {
+   "map_id": "world-mkworld-airship-fortress-2-map",
+   "track": "DS Airship Fortress 2",
+   "game": "Mario Kart World",
+   "console": "Switch 2",
+   "cup": "VS only",
+   "type": "race"
+  },
+  {
+   "map_id": "world-mkworld-salty-salty-speedway-2-map",
+   "track": "Salty Salty Speedway 2",
+   "game": "Mario Kart World",
+   "console": "Switch 2",
+   "cup": "VS only",
+   "type": "race"
+  },
+  {
+   "map_id": "world-shy-guy-bazaar-world-route-2",
+   "track": "3DS Shy Guy Bazaar 2",
+   "game": "Mario Kart World",
+   "console": "Switch 2",
+   "cup": "VS only",
+   "type": "race"
   }
  ],
  "schedule": [
@@ -3064,6 +3096,7 @@ window.MINIMAPPED = {
   "world-mkworld-boocinema-map",
   "snes-battle-course-3",
   "snes-vanilla-lake-1",
+  "world-mkworld-mario-bros-circuit-2-map",
   "mk8-cnsw-31",
   "tour-piranhaplantpipeline",
   "gcnbattle-gcn-cookieland",
@@ -3264,6 +3297,7 @@ window.MINIMAPPED = {
   "gba-03",
   "gba-19",
   "gcn-09",
+  "world-mkworld-salty-salty-speedway-2-map",
   "world-choco-island-1-world",
   "mk7-23-track",
   "n64-14-yoshi-valley",
@@ -3440,6 +3474,7 @@ window.MINIMAPPED = {
   "mk7-11-track",
   "world-desert-hills-world",
   "world-moomoomeadows-mkw",
+  "world-shy-guy-bazaar-world-route-2",
   "mk8-g64-peachcircuit",
   "world-dandeliondepths-mkw",
   "mk8-cnsw-44",
@@ -3447,6 +3482,7 @@ window.MINIMAPPED = {
   "wii-race-11",
   "mk8-cnsw-21",
   "mk8-gu-rainbowroad",
+  "world-mkworld-salty-salty-speedway-2-map",
   "mk8-g64-rainbowroad",
   "mk8-cnsw-65",
   "mk8-ggc-sherbetland",
@@ -3500,6 +3536,7 @@ window.MINIMAPPED = {
   "mk8-bu-dekaline",
   "world-mario-bros-circuit",
   "snes-bowser-castle-1",
+  "world-mkworld-airship-fortress-2-map",
   "gba-07",
   "gcn-05",
   "mk8-cnsw-52",
@@ -3579,6 +3616,7 @@ window.MINIMAPPED = {
   "gba-16",
   "snes-rainbow-road",
   "mk8-cnsw-11",
+  "world-mkworld-mario-bros-circuit-2-map",
   "wii-race-30",
   "mk8-cnsw-26",
   "mk8-du-dragonroad",
@@ -3610,6 +3648,7 @@ window.MINIMAPPED = {
   "dsretro-13",
   "world-mkworld-mariocircuit-map",
   "wii-race-32",
+  "world-shy-guy-bazaar-world-route-2",
   "tour-gba-cheepcheepisland-tour",
   "tour-rmx-donut-plains-1",
   "dsretro-08",
@@ -3648,6 +3687,7 @@ window.MINIMAPPED = {
   "mk8-cnsw-33",
   "mk7-07-track",
   "gba-20",
+  "world-mkworld-airship-fortress-2-map",
   "wii-race-13",
   "snes-mario-circuit-3",
   "gba-18",
